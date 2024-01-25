@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee; http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+	id="WebApp_ID" version="4.0">
+	<display-name>web01</display-name>
+	<welcome-file-list>
+		<welcome-file>home.jsp</welcome-file>
+<!-- 		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file> -->
+	</welcome-file-list>
+	<!-- ** url 매핑 => 서블릿 정의 -> 매핑 => 동일 클래스라 하더라도 매핑네임 중복은 허용하지 않음 -->
+
+	<servlet>
+		<servlet-name>myservlet</servlet-name>
+		<servlet-class>servlet01.Ex02_MVC01List</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>myservlet</servlet-name>
+		<url-pattern>/hello</url-pattern>
+		<url-pattern>/안녕</url-pattern>
+		<url-pattern>/갓승삼</url-pattern>
+		<url-pattern>/근정아졸지말자</url-pattern>
+	</servlet-mapping>
+
+	<!-- Session Time 설정 -->
+	<!-- Tag session-config 의 subTag session-timeout -->
+	<!-- 여기는 단위가 '분'임 / 근데 0 이거나 음수인 경우 무제한 임 -->
+	<session-config>
+		<session-timeout>0</session-timeout>
+	</session-config>
+
+	
+	<!-- Exception Test1 : 응답상태코드 -->
+	<error-page>
+		<error-code>404</error-code>	<!-- 이 에러코드에 대해서 -->
+		<location>/jsp04_Exception/ex02_404Page.jsp</location>		<!-- 얘로 대응해라 라는 의미임 -->
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>	<!-- 이 에러코드에 대해서 -->
+		<location>/jsp04_Exception/ex02_500Page.jsp</location>		<!-- 얘로 대응해라 라는 의미임 -->
+	</error-page>
+	
+	<!-- Exception Test2 : Exception Type -->
+	<error-page>
+		<exception-type>java.lang.NullPointerException</exception-type>		<!-- 해당 타입의 에러가 발생하면 -->
+		<location>/jsp04_Exception/ex03_Null.jsp</location>				<!-- 얘로 대응해라 라는 의미임 -->
+	</error-page>
+	<error-page>
+		<exception-type>java.lang.ArithmeticException</exception-type>		<!-- 해당 타입의 에러가 발생하면 -->
+		<location>/jsp04_Exception/ex03_Arith.jsp</location>					<!-- 얘로 대응해라 라는 의미임 -->
+	</error-page>
+
+</web-app>
+

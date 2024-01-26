@@ -16,12 +16,12 @@
 
 
 
-	<c:if test="${!empty requestScope.message}">
-		<hr>${requestScope.message}<br>
-	</c:if>
+<c:if test="${!empty requestScope.message}">
+	<hr>${requestScope.message}<br>
+</c:if>
 <!-- 로그인 전 -->
 
-<c:if test="${empty sessionScope.loginID}">
+<c:if test="${empty sessionScope.loginID && empty requestScope.message}">
 		&nbsp;로그인 후 이용하세요 <(＿　＿)><(＿　＿)><br><br>
 		&nbsp;<a href="member/loginForm">LoginF</a>&nbsp;
 		&nbsp;<a href="member/joinForm">JoinF</a>&nbsp;
@@ -38,6 +38,7 @@
 <br><hr>
 
 &nbsp;<a href="member/memberList">MList</a> &nbsp;
+&nbsp;<a href="jo/joList">JList</a> &nbsp;
 
 <br><hr>
 

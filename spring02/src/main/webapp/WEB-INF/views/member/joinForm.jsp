@@ -71,10 +71,8 @@
 	</form>
 
 	<hr>
-	&nbsp;
 	<a href="/spring02/home">Home</a> &nbsp;
 	<a href="javascript:history.go(-1)">이전으로</a>
-
 	<hr>
 <c:if test="${!empty requestScope.message}">
 	${requestScope.message}

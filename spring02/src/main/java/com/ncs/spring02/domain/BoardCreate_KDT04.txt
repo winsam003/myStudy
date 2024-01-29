@@ -1,0 +1,80 @@
+** 게시판 관리
+1. board Table Create
+=> 컬럼 정의
+	: seq(P.Key), id, title, content, regdate, cnt, 댓글(root, step, indent)
+=> 생성문
+create table board(
+seq int(5) Primary Key Auto_increment,
+id varchar(10) not null,
+title varchar(200) not null,
+content Text(2000),
+regdate DateTime default Current_TimeStamp,
+cnt int default 0,
+root int default 0,
+step int default 0,
+indent int default 0
+);
+
+=> insert
+insert into board(id, title, content)
+values('merci', "'Spring'이란?", '처음엔 복잡하고 난해하지만 친해지면 매우 편리하다.');
+insert into board(id, title, content)
+values('17', "'의존성주입'이란?", 'dependency injection_객체간의 의존관계를 객체 자신이 아닌 외부의 조립기기로 수행한다.');
+insert into board(id, title, content)
+values('18', "'느슨한 결합(loose coupling)'이란?", '객체는 인터페이스에 의한 의존관계만을 알고 있으며 이 의존관계는 구현 클래스에 대한 차이를 모르는채 서로 다른 구현으로 대체가 가능');
+insert into board(id, title, content)
+values('19', "'Spring의 DI 지원'이란?", 'Spring Container가 DI 조립기(Assembler)를 제공');
+insert into board(id, title, content)
+values('admin', "'Spring 설정파일'이란?", 'Spring Container가 어떻게 일할 지를 설정하는 파일');
+insert into board(id, title, content)
+values('merci', "오늘의 DJ 추천곡", "롤러코스터의 '습관'");
+insert into board(id, title, content)
+values('17', "오늘의 DJ 추천곡", "롤러코스터의 '습관'");
+insert into board(id, title, content)
+values('18', "오늘의 DJ 추천곡", "롤러코스터의 '습관'");
+insert into board(id, title, content)
+values('19', "오늘의 DJ 추천곡", "롤러코스터의 '습관'");
+insert into board(id, title, content)
+values('banana', "오늘의 DJ 추천곡", "롤러코스터의 '습관'");
+
+select seq, id, title, regdate, cnt, root from board;
+
+=> 댓글 관리 (원글: seq와 root 동일해야 함)
+	-> 수정
+	update board set root=seq;
+=> BoardDAO CRUD 구현
+	-> insert에서 seq와 root가 동일한 값으로 입력되어야 함
+	-> seq를 Auto_Increment로 하면 불가능함
+	-> 그러므로 ifNull 함수 적용 (Oracle의 nvl)
+
+=> insert 구문
+insert into board values(
+(select * from (select ifNull(max(seq),0)+1 from board) as temp), 
+"banana", "여기는 title", "여기는 content", Current_TimeStamp, 0,
+root, 0, 0);
+-> root 자리에 넣기
+insert into board values(
+(select * from (select ifNull(max(seq),0)+1 from board) as temp), 
+"banana", "여기는 title", "여기는 content", Current_TimeStamp, 0,
+(select * from (select ifNull(max(seq),0)+1 from board) as temp), 0, 0);
+
+-> DAO
+insert into board values(
+(select * from (select ifNull(max(seq),0)+1 from board) as temp), 
+?, ?, ?, Current_TimeStamp, 0,
+(select * from (select ifNull(max(seq),0)+1 from board) as temp), 0, 0);
+
+-> update 구문 : title, content만 수정 가능(id X). seq 기준
+
+
+2. Project
+2.1) Java Code 
+=> BoardDTO, BoardDAO, BoardService, BoardServiceImple, BoardController
+** 이젠 BoardService에 interface가 있어야 함.
+
+
+2.2) Jsp
+=> boardList, boardDetail, boardInsert, boardUpdate
+=> Login 한 경우에만 List 에서 title 클릭시 detail로 넘어감
+=> Login 한 경우에만 List 에서 글 등록이 가능해야 함 (글 등록 메뉴 표시)
+=> 내 글인 경우에만 boardDetail에 글수정/글삭제 메뉴 표시

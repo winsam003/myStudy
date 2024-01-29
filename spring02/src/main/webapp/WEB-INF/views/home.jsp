@@ -39,10 +39,11 @@
 
 &nbsp;<a href="member/memberList">MList</a> &nbsp;
 &nbsp;<a href="jo/joList">JList</a> &nbsp;
+&nbsp;<a href="board/boardList">BList</a> &nbsp;
 
 <br><hr>
 
-<img alt="mainImage" src="/spring02/resources/images/white01.gif" width="300"height="200">
+<img alt="mainImage" src="/spring02/resources/images/www.gif" width="300"height="200">
 <img alt="mainImage" src="/spring02/resources/images/jjang9.gif" width="300"height="200">
 <img alt="mainImage" src="/spring02/resources/images/IMG_0834.gif" width="300"height="200">
 <img alt="mainImage" src="/spring02/resources/images/jjangjjangjjang.gif"width="300" height="200">

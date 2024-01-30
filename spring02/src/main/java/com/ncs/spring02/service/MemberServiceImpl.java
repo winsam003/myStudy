@@ -49,6 +49,12 @@ public class MemberServiceImpl implements MemberService {
 		return dao.delete(id);
 	} // delete
 	
+	@Override
+	public List<MemberDTO> selectJoList(int jno) {
+		// TODO Auto-generated method stub
+		return dao.selectJoList(jno);
+	}
+	
 	
 	
 } // class

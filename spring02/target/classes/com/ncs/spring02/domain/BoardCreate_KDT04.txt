@@ -78,3 +78,37 @@ insert into board values(
 => Login 한 경우에만 List 에서 title 클릭시 detail로 넘어감
 => Login 한 경우에만 List 에서 글 등록이 가능해야 함 (글 등록 메뉴 표시)
 => 내 글인 경우에만 boardDetail에 글수정/글삭제 메뉴 표시
+
+
+2.3) 조회수 증가
+=> sql : update board set cnt=cnt+1 where sqe=?
+	-> 이걸만들기위해 서비스추가하고 ~ DAO추가하고 할수도있긴한데 넘 귀찮은 작업임
+	-> 그래서 Java 코드에서 cnt+1 전달하면 그냥 cnt=cnt+1 를 cnt=? 으로 해도 됨
+	-> update board set cnt=?
+	그래서 지금 방법으로 하겠음
+	sql : update board set cnt=?
+	그럼 걍 
+	
+=> 조건 : 글쓴이와 글보는이가 다른경우
+=> 어디서 : detail이 누군가가 이글을 본다 를 알 수 있음 그러니 detail에서 처리 함
+
+
+2.3) 조회수 증가
+=> sql
+   -> 1) update board set cnt=cnt+1 where seq=?
+   -> 2) Java code에서 cnt+1 전달하면 set cnt=? 도 가능 (선택)
+
+=> 조건 : 글쓴이와 글보는이가 다른경우
+=> 어디서: detail 에서 
+
+2.4) 계층적 답변형 게시판의 답글달기
+
+=> board 조회
+select seq, id, title, root, step, indent from board order by root desc, step asc;
+
+=> 각 컬럼의 역할
+   -> root: 원글의 seq
+   -> step: 댓글의 출력순서
+   -> indent: 댓글의 레벨
+=> 원글  -> root: 자신의 seq ,  step: 0 , indent: 0
+=> 첫댓글 -> root: 원글의 seq ,  step: 1 , indent: 1   

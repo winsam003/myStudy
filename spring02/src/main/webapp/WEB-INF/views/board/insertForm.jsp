@@ -37,6 +37,7 @@
 <br><hr>
 
 <a href="/spring02/home">홈으로</a>
+<a href="boardList">리스트로</a>
 <a href="javascript:history.go(-1)">뒤로가기</a>
 
 

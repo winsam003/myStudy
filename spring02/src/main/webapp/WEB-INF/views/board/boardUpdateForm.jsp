@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>** Update Form **</title>
+<link rel="stylesheet" type="text/css" href="/spring02/resources/myLib/myStyle.css">
 </head>
 <body>
 <h2>** 게시글수정 Form **</h2>
@@ -26,9 +27,9 @@
 				<th bgcolor="MediumPurple"><label for="title">Title</label></th>
 				<td><input type="text" id="title" name="title" size="20" value="${requestScope.apple.title}"></td>
 			</tr>
-			<tr height="40">
+			<tr height="300">
 				<th bgcolor="MediumPurple"><label for="content">content</label></th>
-				<td><input type="text" id="content" name="content" size="20" value="${requestScope.apple.content}"></td>
+				<td><textarea rows="20" cols="100" name="content"></textarea></td>
 			</tr>
 			<tr height="40">
 				<th bgcolor="MediumPurple"><label for="regdate">작성시간</label></th>
@@ -51,6 +52,7 @@
 	<hr>
 	&nbsp;
 	<a href="/spring02/home">Home</a> &nbsp;
+	<a href="boardList">리스트로</a>
 	<a href="javascript:history.go(-1)">이전으로</a>
 
 	<hr>

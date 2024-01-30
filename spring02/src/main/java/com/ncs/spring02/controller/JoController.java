@@ -7,12 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ncs.spring02.domain.JoDTO;
-import com.ncs.spring02.domain.MemberDTO;
 import com.ncs.spring02.service.JoService;
+import com.ncs.spring02.service.MemberService;
 
 @RequestMapping(value="/jo")
 @Controller
@@ -20,6 +19,9 @@ public class JoController {
 	
 	@Autowired(required = false)
 	JoService service;
+	
+	@Autowired(required = false)
+	MemberService mservice;
 	
 	
 	@RequestMapping(value="/joList", method = RequestMethod.GET)
@@ -35,6 +37,7 @@ public class JoController {
 			uri = "jo/joUpdate";
 		}
 		model.addAttribute("joDetail", service.selectOne(jno));
+		model.addAttribute("userDetail", mservice.selectJoList(jno));
 		return uri;
 	} // Member Detail
 	

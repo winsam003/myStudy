@@ -13,7 +13,7 @@
 
 <h2>** BoardList **</h2>
 
-<table border="1" style="width:100%">
+<table style="width:100%">
 	<tr bgcolor="HotPink ">
 		<th>Seq</th>
 		<th>Title</th>
@@ -24,8 +24,15 @@
 	<c:if test="${!empty requestScope.banana}">
 		<c:forEach var="b" items="${requestScope.banana}">
 			<tr>
-				<td>${b.seq}</td>
+				<td style="text-align:center">${b.seq}</td>
 				<td>
+				<!-- 답글 등록 후 Title 출력 전에 들여쓰기 추가 -->
+				<c:if test="${b.indent>0}">
+					<c:forEach begin="1" end="${b.indent}">
+						<span>&nbsp;&nbsp;</span>
+					</c:forEach>
+					<span style="color:blue; font-weight:bold">re..</span>
+				</c:if>
 					<c:if test="${!empty sessionScope.loginID}">
 						<a href="detail?jCode=D&seq=${b.seq}">${b.title}</a>
 					</c:if>

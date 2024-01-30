@@ -24,7 +24,8 @@ public class BoardDAO {
 
 	// ** selectList
 	public List<BoardDTO> selectList(){
-		sql="select * from Board order by seq desc";
+		// 답글 입력 후 순서 변경 sql
+		sql="select * from Board order by root desc, step asc";
 		List<BoardDTO> list = new ArrayList<BoardDTO>();
 		try {
 			pst=cn.prepareStatement(sql);
@@ -84,7 +85,11 @@ public class BoardDAO {
 		}
 	}
 	
-	// ** insert
+	   // ** insert : 원글입력
+	   // => 입력 컬럼: id, title, content 
+	   //    default값: regdate, cnt, step, indent
+	   // => root : seq 와 동일한 값   
+	   // => Auto_Inc: seq (계산: auto 보다 IFNULL(max(seq)...) 를 적용)
 	public int insert(BoardDTO dto) {
 		sql = "insert into board values(\r\n"
 				+ "(select * from (select ifNull(max(seq),0)+1 from board) as temp), \r\n"
@@ -99,10 +104,61 @@ public class BoardDAO {
 			
 			return pst.executeUpdate();
 		}catch(Exception e) {
-			System.out.println("** Board inset => "+e);
+			System.out.println("** Board insert => "+e);
 			return 0;
 		}
 	}
+	
+	// ** replyInsert : 답글 입력
+	public int rinsert(BoardDTO dto) {
+		sql = "insert into board(seq, id, title, content, root, step, indent) values("
+				+ "(select * from (select ifNull(max(seq),0)+1 from board) as temp)"
+				+ ",?, ?, ?, ?, ?, ?)";
+		
+		try {
+			pst=cn.prepareStatement(sql);
+			pst.setString(1, dto.getId());
+			pst.setString(2, dto.getTitle());
+			pst.setString(3, dto.getContent());
+			pst.setInt(4, dto.getRoot());
+			pst.setInt(5, dto.getStep());
+			pst.setInt(6, dto.getIndent());
+			pst.executeUpdate();	// 답글등록 성공 -> stepUpdate
+			System.out.println("** stepUpdate Count = "+stepUpdate(dto));
+			
+			
+			return 1;
+		}catch(Exception e) {
+			System.out.println("** Reply_insert Exception => "+e);
+			return 0;
+		}
+	} //replyInsert
+	
+	// ** stepUpdate : step 값 증가
+	// => 조건 정의
+	//	-> 조건1: 같은 family이어야 함 즉 root는 동일해야 함 
+	//	-> 조건2: step >=(크거나 같음)이어야 함
+	//	-> 조건3: 새글은 제외해야 함
+	// => boardList 의 출력순서 확인
+	//		~~ order by root desc, stem asc
+	public int stepUpdate(BoardDTO dto) {
+		sql = "update board set step = step+1 where root=? "										// 조건 1
+				+ "and step>=? "																	// 조건 2
+				+ "and seq <> (select * from (select ifNull(max(seq),0) from board) as temp)";		// 조건 3
+		
+		try {
+			pst=cn.prepareStatement(sql);
+			pst.setInt(1, dto.getRoot());
+			pst.setInt(2, dto.getStep());
+			
+			return pst.executeUpdate();			// 수정 된 DATA 개수 return
+		} catch (Exception e) {
+			System.out.println("** stepUpdate Exception => "+e);
+			return 0;
+		}
+	} // stepUpdate
+	
+	
 	
 	// ** update
 	public int update(BoardDTO dto) {
@@ -132,9 +188,8 @@ public class BoardDAO {
 		try {
 			pst=cn.prepareStatement(sql);
 			pst.setInt(1, seq);
+			System.out.println("test1");
 			return pst.executeUpdate();
-			
-			
 		}catch(Exception e) {
 			System.out.println("** Board delete => "+e);
 			return 0;

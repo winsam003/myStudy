@@ -56,4 +56,23 @@ a:active { color:Blue; }
 	float: left;
 }
 
+.form{
+	display: flex;
+	justify-content: center;
+}
+
+input{
+	border-radius: 15px;
+}
+
+th{
+	border-radius: 15px;
+	font-weight: bold;
+	width: 100px;
+}
+
+caption{
+	font-size: 30px;
+	font-weight: bold;
+}
 

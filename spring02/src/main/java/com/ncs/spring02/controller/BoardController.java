@@ -133,11 +133,11 @@ public class BoardController {
 	}
 	
 	@GetMapping("/delete")
-	public String delete(@RequestParam("seq") int seq, RedirectAttributes rttr) {
+	public String delete(BoardDTO dto, RedirectAttributes rttr) {
 		String uri = "redirect:/home";
 		System.out.println("test");
 		
-		if(service.delete(seq)>0) {
+		if(service.delete(dto)>0) {
 			rttr.addFlashAttribute("message", "게시글 삭제가 완료되었습니다.");
 		}else {
 			rttr.addFlashAttribute("message", "게시글 삭제가 실패하였습니다..");

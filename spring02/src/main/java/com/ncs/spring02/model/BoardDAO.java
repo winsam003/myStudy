@@ -124,6 +124,7 @@ public class BoardDAO {
 			pst.setInt(5, dto.getStep());
 			pst.setInt(6, dto.getIndent());
 			pst.executeUpdate();	// 답글등록 성공 -> stepUpdate
+			System.out.println(dto);
 			System.out.println("** stepUpdate Count = "+stepUpdate(dto));
 			
 			
@@ -145,7 +146,7 @@ public class BoardDAO {
 		sql = "update board set step = step+1 where root=? "										// 조건 1
 				+ "and step>=? "																	// 조건 2
 				+ "and seq <> (select * from (select ifNull(max(seq),0) from board) as temp)";		// 조건 3
-		
+		System.out.println(dto);
 		try {
 			pst=cn.prepareStatement(sql);
 			pst.setInt(1, dto.getRoot());
@@ -182,19 +183,26 @@ public class BoardDAO {
 	}
 	
 	// ** delete
-	public int delete(int seq) {
-		sql = "delete from board where seq = ?";
+	// => 답글 추가 후 : 원글 과 답글 구분을 해야 함
+	// 	-> 원글 : root가 동일한 모든 게시글 삭제
+	//			~where root=?
+	//	-> 답글 : 답글만 지워지면 됨 
+	//			~where seq=?
+	public int delete(BoardDTO dto) {
+		if(dto.getSeq()==dto.getRoot()) {	// 원글
+			sql = "delete from board where root = ?";
+		}else {								// 답글
+			sql = "delete from board where seq = ?";
+		}
 		
 		try {
 			pst=cn.prepareStatement(sql);
-			pst.setInt(1, seq);
-			System.out.println("test1");
+			pst.setInt(1, dto.getSeq());
 			return pst.executeUpdate();
 		}catch(Exception e) {
 			System.out.println("** Board delete => "+e);
 			return 0;
 		}
-		
 	}
 	
 }// class

@@ -55,7 +55,7 @@
     서버로 보내주어야함 (퀴리스트링으로 작성)    -->
 	<c:if test="${sessionScope.loginID eq requestScope.apple.id}">
 		<a href="detail?jCode=U&seq=${requestScope.apple.seq}">글 수정</a>
-		<a href="delete?seq=${requestScope.apple.seq}">글 삭제</a>
+		<a href="delete?seq=${requestScope.apple.seq}&root=${requestScope.apple.root}">글 삭제</a>
 		<hr>
 	</c:if>
 

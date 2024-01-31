@@ -57,7 +57,7 @@ function pwCheck(){
 	}else if(pw.replace(/[a-z.0-9.!-*.@]/gi,'').length>0){
 		document.getElementById('pMessage').innerHTML='password 는 영문과 숫자, 특수문자로 구성되어야 합니다.';
 		return false;
-	}else if(/[!-*.@]/g.test(pw)){
+	}else if(!(/[!-*.@]/g.test(pw))){
 		document.getElementById('pMessage').innerHTML='특수문자를 반드시 포함해야 합니다.';
 		return false;
 	}else{

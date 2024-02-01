@@ -24,8 +24,9 @@ a:active { color:Blue; }
 /* Error Message */
 .eMessage {
 	color: red;
-	font-size: x-small; 
+	font-size: medium;
 	font-style: italic;
+	margin-left: 10px;
 }
  /* Span MenuLink */
 .textlink { color:Blue; font-weight:bold; }
@@ -74,5 +75,10 @@ th{
 caption{
 	font-size: 30px;
 	font-weight: bold;
+}
+
+#idDup{
+	width:80px; height:20px;
+	border-radius: 15px;
 }
 

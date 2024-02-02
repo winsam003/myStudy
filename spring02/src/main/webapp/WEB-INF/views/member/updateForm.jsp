@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<link rel="stylesheet" type="text/css" href="/spring02/resources/myLib/myStyle.css">
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,16 +14,18 @@
 	<form action="update" method="post">
 		<table>
 			<caption>정보수정</caption>
+			<%-- passwordEncoder 적용 후 분리 됨 -> password 수정하기를 따로 만들 것임 
+			<tr height="40">
+				<th bgcolor="MediumPurple"><label for="password">Password</label></th>
+				<td><input type="password" id="password" name="password"
+					size="20" value="${requestScope.userDetail.password}"></td>
+			</tr> --%>
+			
 
 			<tr height="40">
 				<th bgcolor="MediumPurple"><label for="id">I D</label></th>
 				<td><input type="text" id="id" name="id" size="20"
 					value="${requestScope.userDetail.id}" readonly></td>
-			</tr>
-			<tr height="40">
-				<th bgcolor="MediumPurple"><label for="password">Password</label></th>
-				<td><input type="password" id="password" name="password"
-					size="20" value="${requestScope.userDetail.password}"></td>
 			</tr>
 			<tr height="40">
 				<th bgcolor="MediumPurple"><label for="name">이름</label></th>
@@ -72,6 +75,7 @@
 	</form>
 
 	<hr>
+	<a href="pwUpdate">Password수정</a><br>
 	&nbsp;
 	<a href="/spring02/home">Home</a> &nbsp;
 	<a href="javascript:history.go(-1)">이전으로</a>

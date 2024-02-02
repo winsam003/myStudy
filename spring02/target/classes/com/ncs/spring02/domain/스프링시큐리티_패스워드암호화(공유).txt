@@ -167,7 +167,7 @@
 
 ** password 컬럼 길이 확인
 
-=> 암호화된 pasword 길이는 최소 70byte 이상
+=> 암호화된 password 길이는 최소 70byte 이상
 => 그러므로 password 컬럼 길이를 varchar2(100) 으로 변경
 => MySql : varchar(100)
 	-> alter table member Modify password varchar(100);

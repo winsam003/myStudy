@@ -1,15 +1,24 @@
 package com.ncs.spring02.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ncs.spring02.domain.MemberDTO;
@@ -21,6 +30,11 @@ public class MemberController {
 
 	@Autowired(required = false)
 	MemberService service;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	// = new BCryptPasswordEncoder();
+	//		-> root-context.xml 에 bean 등록했음
 	
 	// ** ID 중복확인
 	@GetMapping("/idDupCheck")
@@ -49,11 +63,11 @@ public class MemberController {
 
 	// ver02 : return void
 	// ViewName이 생략됐다는 이야기임 그러면 스프링은 요청명과 똑같은 애로 뷰네임을 찾음
-	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
+	@GetMapping("/loginForm")
 	public void loginForm() {
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@PostMapping("login")
 	public String login(HttpSession session, Model model, MemberDTO dto) {
 		// 1. 요청분석
 		// => requst 로 전달되는 id, password 처리:
@@ -70,7 +84,8 @@ public class MemberController {
 		// => 실패: 재로그인 유도
 		dto = service.selectOne(dto.getId());
 
-		if (dto != null && dto.getPassword().equals(password)) {
+		//if (dto != null && dto.getPassword().equals(password)) {
+		if(dto != null && passwordEncoder.matches(password, dto.getPassword())) {
 			// 성공
 			session.setAttribute("loginID", dto.getId());
 			session.setAttribute("loginName", dto.getName());
@@ -120,13 +135,78 @@ public class MemberController {
 	public void joinForm() {
 	} // Join Form
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// ** Join
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
-	public String join(Model model, MemberDTO dto) {
+	public String join(Model model, MemberDTO dto, HttpServletRequest request) throws IOException {
 		// 1. 요청분석
 		// => 이전에는 한글처리, request 처리해줘야했는데
 		// spring에서는 한글을 필터로, request는 매개변수(파라미터)로 자동화 됐음
 		String uri = "member/loginForm";
+		
+		String realPath = request.getRealPath("/");
+		System.out.println("** realPath => "+realPath);
+		
+		
+		
+		
+		
+		// 1.2) realPath 를 이용해서 물리적저장 위치 (file2) 를 확인 함
+		if(realPath.contains(".eclipse.")) 				// 개발중~(배포전)
+			realPath = "E:\\Sam\\mySpace\\myStudy\\spring02\\src\\main\\webapp\\resources\\uploadImages\\";
+		else 											// 개발끝~(배포후)
+			realPath ="resources\\uploadImages\\";
+		
+		
+		
+		// 1.3) 폴더 만들기 (폴더가 없을수도 있음)
+		File file = new File(realPath);
+		if(!file.exists()) {
+			// => 저장폴더가 조재하지 않는 경우 만들어 줌
+			file.mkdir();
+		}
+		
+
+		
+		
+	      // 1.4) 저장경로 완성
+	      // => 기본 이미지 저장
+	      String file1="", file2="basicman1.jpg";
+	      
+	      MultipartFile uploadfilef = dto.getUploadfilef();
+	      if ( uploadfilef!=null && !uploadfilef.isEmpty() ) {
+	         // => image_File 을 선택함  
+	         // 1.4.1) 물리적위치 저장 (file1)
+	         file1=realPath+uploadfilef.getOriginalFilename(); //저장경로(relaPath+화일명) 완성
+	         uploadfilef.transferTo(new File(file1)); //해당경로에 저장(붙여넣기)
+	         
+	         // 1.4.2) Table 저장경로 완성 (file2)
+	         file2 = uploadfilef.getOriginalFilename();
+	      }
+		
+		dto.setUploadfile(file2);
+		
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		
 		// 2. Service & and 결과
 		if(service.insert(dto) > 0) {
@@ -140,6 +220,70 @@ public class MemberController {
 		
 		return uri;
 	} // Join
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// ** Password Update (PasswordEncoder 가 추가되면서 패스워드 수정이 독립적으로 바뀜)
+	@GetMapping("/pwUpdate")
+	public void pwUpdate() {
+		// View_name 생략
+	}
+	
+	// ** PasswordUpdate
+	// => Service, DAO, 모두 pwUpdate 작업해야 함
+	// pwUpdate(MemberDTO dto) 로 만들어야 할듯
+	// 성공: 세션 무효화 -> 재 로그인을 유도 -> 로그인창
+	// 실패: 재 수정 유도 -> pwUpdate
+	@PostMapping("/pwUpdate")
+	public String pwUpdate(HttpSession session, Model model, MemberDTO dto) {
+		// 1) 요청분석
+		// => id 값을 가지고 와야 함 -> session
+		dto.setId((String)session.getAttribute("loginID"));
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+		
+		String uri = "member/loginForm";
+		
+		// 2) 서비스 처리
+		if(service.pwUpdate(dto) > 0) {
+			// 성공
+			session.invalidate();
+			model.addAttribute("message", "Password 수정이 완료되었습니다. 재로그인 하세요");
+		}else {
+			// 실패
+			uri = "member/pwUpdate";
+			model.addAttribute("message", "Password 수정에 실패하였습니다. 다시 입력해주세요");
+		}
+		
+		return uri;
+	}
+	
+	
 	
 	
 	// ** Update

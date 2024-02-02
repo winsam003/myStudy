@@ -168,6 +168,18 @@ function poCheck(){
 }
 
 
+// 7) Birthday
+function bdCheck(){
+    let birthday = document.getElementById('birthday').value;
+
+    if(birthday.length!=10){
+        document.getElementById('bMessage').innerHTML='생년월일 입력 해주세요. (yyyy-mm-dd)';
+        return false;
+    }else{
+        document.getElementById('bMessage').innerHTML='';
+        return true;
+    }
+}
 
 
 

@@ -55,6 +55,10 @@ public class MemberServiceImpl implements MemberService {
 		return dao.selectJoList(jno);
 	}
 	
+	@Override
+	public int pwUpdate(MemberDTO dto) {
+		return dao.pwUpdate(dto);
+	}
 	
 	
 } // class

@@ -15,14 +15,14 @@
 </c:if>
 <table border="1" style="width:100%;">
 	<tr bgcolor="DeepSkyBlue">
-		<th>ID</th><th>Password</th><th>Name</th><th>Age</th><th>Jno</th><th>Info</th><th>Point</th><th>Birthday</th><th>추천인</th>
+		<th>ID</th><th>Name</th><th>Age</th><th>Jno</th><th>Info</th><th>Point</th><th>Birthday</th><th>추천인</th><th>Image</th>
+		<!-- <th>Password</th> -->
 	</tr>
 	
 <c:if test="${!empty requestScope.banana}"></c:if>
 	<c:forEach var="list" items="${requestScope.banana}">
 		<tr>
 			<td>${list.id}</td>
-			<td>${list.password}</td>
 			<td>${list.name}</td>
 			<td>${list.age}</td>
 			<td>${list.jno}</td>
@@ -30,6 +30,8 @@
 			<td>${list.point}</td>
 			<td>${list.birthday}</td>
 			<td>${list.rid}</td>
+			<td><img alt="myImage" src="/spring02/resources/uploadImages/${list.uploadfile}" width="100"height="100"></td>
+			<%-- <td>${list.password}</td> --%>
 		</tr>
 	</c:forEach>
 <c:if test="${empty requestScope.banana}">

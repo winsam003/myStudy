@@ -45,7 +45,7 @@
 <br><hr>
 
 <img alt="mainImage" src="/spring02/resources/images/www.gif" width="300"height="200">
-<img alt="mainImage" src="/spring02/resources/images/jjang9.gif" width="300"height="200">
+<img alt="mainImage" src="/spring02/resources/images/winter.gif" width="300"height="200">
 <img alt="mainImage" src="/spring02/resources/images/IMG_0834.gif" width="300"height="200">
 <img alt="mainImage" src="/spring02/resources/images/jjangjjangjjang.gif"width="300" height="200">
 <img alt="mainImage" src="/spring02/resources/images/JJang.gif" width="300"height="200">

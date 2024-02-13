@@ -77,6 +77,7 @@ public class MemberController {
 		String password = dto.getPassword();
 		String uri = "redirect:/"; // 성공 시
 
+		System.out.println(dto);
 		// 2. 서비스 & 결과 처리
 		// => id 확인
 		// => 존재하면 Password 확인
@@ -175,7 +176,11 @@ public class MemberController {
 		if(realPath.contains(".eclipse.")) 				// 개발중~(배포전)
 			realPath = "E:\\Sam\\mySpace\\myStudy\\spring02\\src\\main\\webapp\\resources\\uploadImages\\";
 		else 											// 개발끝~(배포후)
-			realPath ="resources\\uploadImages\\";
+			realPath ="E:\\Sam\\IDESet\\apache-tomcat-9.0.85\\webapps\\spring02\\resources\\uploadImages\\";
+		// 배포 후 경로-> E:\Sam\IDESet\apache-tomcat-9.0.85\webapps\spring02\
+		
+		
+		
 		
 		
 		
@@ -187,6 +192,20 @@ public class MemberController {
 		}
 		
 
+		
+	      // ** File Copy 하기 (IO Stream)
+	      // => 기본이미지(basicman4.png) 가 uploadImages 폴더에 없는경우 기본폴더(images) 에서 가져오기
+	      // => IO 발생: Checked Exception 처리
+		File f1 = new File(realPath+"basicman4.png"); // uploadImages 폴더에 화일존재 확인을 위함
+	      if ( !f1.isFile() ) { // 존재하지않는 경우
+	         String basicImagePath 
+	               = "E:\\Sam\\mySpace\\myStudy\\spring02\\src\\main\\webapp\\resources\\images\\basicman4.png";
+	         FileInputStream fi = new FileInputStream(new File(basicImagePath));
+	         // => basicImage 읽어 파일 입력바이트스트림 생성
+	         FileOutputStream fo = new FileOutputStream(f1); 
+	         // => 목적지 파일(realPath+"basicman4.png") 출력바이트스트림 생성  
+	         FileCopyUtils.copy(fi, fo);
+	      }
 		
 		
 	      // 1.4) 저장경로 완성
@@ -204,8 +223,11 @@ public class MemberController {
 	         file2 = uploadfilef.getOriginalFilename();
 	      }
 		
+	      
+	      
+	      
+	      
 		dto.setUploadfile(file2);
-		
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		
 		// 2. Service & and 결과
@@ -288,12 +310,49 @@ public class MemberController {
 	
 	// ** Update
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(HttpSession session, Model model, MemberDTO dto) {
+	public String update(HttpServletRequest request, HttpSession session, Model model, MemberDTO dto) throws IOException {
 		// 1. 요청분석
 		// 성공: memberDetail, 실패: updateForm
 		// 두 경우 모두 출력하려면 dto 객체의 값이 필요 함
 		String uri = "member/memberDetail";
 		model.addAttribute("userDetail", dto);
+		
+		
+		// ** uploadFile 처리
+		// => newImage 선택 여부 확인
+		// => 선택 시 -> old Image 삭제, new Image 저장 : uploadfilef 를 사용 함
+		// => 미선택 시 -> oldImage가 이미 uploadfile 으로 전달되기 때문에 아무것도 안하면 됨
+
+		// 1.4) 저장경로 완성
+		// => 기본 이미지 저장
+
+		MultipartFile uploadfilef = dto.getUploadfilef();
+		if (uploadfilef != null && !uploadfilef.isEmpty()) {
+			// => newImage 를 선택함
+			// 1) 물리적 위치 저장(file1)
+			String realPath = request.getRealPath("/");
+			String file1 = "";
+			
+			// 2) realPath 를 이용해서 물리적저장 위치 (file1) 를 확인 함
+			if(realPath.contains(".eclipse.")) 				// 개발중~(배포전)
+				realPath = "E:\\Sam\\mySpace\\myStudy\\spring02\\src\\main\\webapp\\resources\\uploadImages\\";
+			else 											// 개발끝~(배포후)
+				realPath ="resources\\uploadImages\\";
+			
+			// 3) oldFile 삭제
+			// => oldFile Name : dto.getUploadfile();
+			// => 삭제경로 : realPath+dto.getUploadfile();
+			File delFile = new File(realPath+dto.getUploadfile());
+			if(delFile.isFile()) delFile.delete();	// file 존재 시 삭제
+			
+			
+			// 4) newFile 저장
+			file1 = realPath + uploadfilef.getOriginalFilename(); // 저장경로(relaPath+화일명) 완성
+			uploadfilef.transferTo(new File(file1)); // 해당경로에 저장(붙여넣기)
+
+			// 5) Table 저장경로 완성 (file2)
+			dto.setUploadfile(uploadfilef.getOriginalFilename());
+		}
 		
 		// 2. Service & and 결과
 		if(service.update(dto) > 0) {

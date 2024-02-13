@@ -336,8 +336,8 @@ public class MemberController {
 			// 2) realPath 를 이용해서 물리적저장 위치 (file1) 를 확인 함
 			if(realPath.contains(".eclipse.")) 				// 개발중~(배포전)
 				realPath = "E:\\Sam\\mySpace\\myStudy\\spring02\\src\\main\\webapp\\resources\\uploadImages\\";
-			else 											// 개발끝~(배포후)
-				realPath ="resources\\uploadImages\\";
+			else											// 배포후
+				realPath ="E:\\Sam\\IDESet\\apache-tomcat-9.0.85\\webapps\\spring02\\resources\\uploadImages\\";
 			
 			// 3) oldFile 삭제
 			// => oldFile Name : dto.getUploadfile();

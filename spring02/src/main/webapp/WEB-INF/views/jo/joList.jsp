@@ -26,7 +26,7 @@
 
 			<c:forEach var="list" items="${requestScope.joList}">
 				<tr>
-					<td><a href="joDetail?jno=${list.jno}&jCode=D">${list.jno}</a></td>
+					<td style="text-align:center"><a href="joDetail?jno=${list.jno}&jCode=D">${list.jno}</a></td>
 					<td>${list.jname}</td>
 					<td>${list.captain}</td>
 					<td>${list.cname}</td>

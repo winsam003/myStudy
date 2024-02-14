@@ -15,6 +15,8 @@ import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.service.BoardService;
 
 import lombok.AllArgsConstructor;
+import pageTest.Criteria;
+import pageTest.PageMaker;
 
 
 @Controller
@@ -23,6 +25,28 @@ import lombok.AllArgsConstructor;
 public class BoardController {
 
 	BoardService service;
+	
+	//** Board_Paging
+	@GetMapping("/bPageList")
+	public void bPageList(Model model, Criteria cri, PageMaker pageMaker) {
+		// 1) Criteria 처리
+	    // => currPage, rowsPerPage 값들은 Parameter 로 전달되어 자동으로 cri에 set
+		cri.setSnoEno();
+		
+		// 2) Service
+		// => 출력 대상인 Rows 를 select 해옴
+		model.addAttribute("banana", service.bPageList(cri));
+		
+		// 3) View 처리 : PageMaker를 활용
+		// => cri, totalRowsCount (Read from DB)
+		pageMaker.setCri(cri);
+		pageMaker.setTotalRowsCount(service.totalRowsCount(cri));
+		// 여기서 cri 매개변수는 현재는 필요없으나 검색같은걸 하려면 필요함
+		model.addAttribute("pageMaker", pageMaker);
+		
+		
+	} // bPageList
+	
 	
 	// ** Reply Insert
 	@GetMapping("/replyInsert")

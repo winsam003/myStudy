@@ -9,6 +9,7 @@ import com.ncs.spring02.domain.BoardDTO;
 
 import mapperInterface.BoardMapper;
 import pageTest.Criteria;
+import pageTest.SearchCriteria;
 
 @Service
 public class BoardServiceImpl implements BoardService {
@@ -59,14 +60,27 @@ public class BoardServiceImpl implements BoardService {
 
 	
 	@Override
-	public List<BoardDTO> bPageList(Criteria cri) {
+	public List<BoardDTO> bPageList(SearchCriteria cri) {
 		// TODO Auto-generated method stub
-		return mapper.bPageList(cri);
+		return mapper.bSearchList(cri);
 	}
 	
 	@Override
-	public int totalRowsCount(Criteria cri) {
+	public int totalRowsCount(SearchCriteria cri) {
 		// TODO Auto-generated method stub
-		return mapper.totalRowsCount(cri);
+		return mapper.bSearchRowsCount(cri);
 	}
+	
+	@Override
+	public List<BoardDTO> bCheckList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return mapper.bCheckList(cri);
+	}
+	
+	@Override
+	public int bCheckRowsCount(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return mapper.bCheckRowsCount(cri);
+	}
+	
 }

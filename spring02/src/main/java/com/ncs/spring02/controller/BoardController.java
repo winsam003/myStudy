@@ -15,8 +15,8 @@ import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.service.BoardService;
 
 import lombok.AllArgsConstructor;
-import pageTest.Criteria;
 import pageTest.PageMaker;
+import pageTest.SearchCriteria;
 
 
 @Controller
@@ -26,15 +26,48 @@ public class BoardController {
 
 	BoardService service;
 	
-	//** Board_Paging
-	@GetMapping("/bPageList")
-	public void bPageList(Model model, Criteria cri, PageMaker pageMaker) {
+	@GetMapping("/bCheckList")
+	public String bCheckList(Model model, SearchCriteria cri, PageMaker pageMaker) {
+		
+		String uri= "board/bPageList";
+		
 		// 1) Criteria 처리
-	    // => currPage, rowsPerPage 값들은 Parameter 로 전달되어 자동으로 cri에 set
+		cri.setSnoEno();
+		
+		// 2) Service
+	    // => check 의 값을 선택하지 않은경우 check 값을 null 로 확실하게 해줘야함.
+	    //    mapper 에서 명확하게 구분할수 있도록해야 정확한 저리가능  
+		if(cri.getCheck() != null && cri.getCheck().length<1)
+			cri.setCheck(null);
+		
+		model.addAttribute("banana", service.bCheckList(cri));
+		
+		// 3) View처리: PageMaker 이용
+		pageMaker.setCri(cri);
+		pageMaker.setTotalRowsCount(service.bCheckRowsCount(cri));
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return uri;
+	} // bCheckList
+	
+	
+	
+	
+	//** Board_Paging
+	// 	=> version01: Criteria사용
+	//	=> version02: searchCriteria 사용(검색기능 추가)
+	@GetMapping("/bPageList")
+	public void bPageList(Model model, SearchCriteria cri, PageMaker pageMaker) {
+		// 1) Criteria 처리
+	    // => version01: currPage, rowsPerPage 값들은 Parameter 로 전달되어 자동으로 cri에 set
+		// => version02: version01 + searchType, keyword 도 동일하게 cri에 set
 		cri.setSnoEno();
 		
 		// 2) Service
 		// => 출력 대상인 Rows 를 select 해옴
+		// => ver01, 02 모두 같은 service 매서드사용,
+		//		mapper interface 에서 사용하는 sql 구문만 교체
+		//		즉, BoardMapper.xml 에 새로운 sql구문 추가, BoardMapper.java interface 수정
 		model.addAttribute("banana", service.bPageList(cri));
 		
 		// 3) View 처리 : PageMaker를 활용
@@ -96,7 +129,7 @@ public class BoardController {
 	// 		-> loginID 와 board 의 id 가 다른경우
 	@GetMapping("/detail")
 	public String boardDetail(HttpSession session, Model model, @RequestParam("jCode") String jCode, @RequestParam("seq") int seq) {
-		String uri = "board/boardDetail";
+		String uri = "board/bPageList";
 		if("U".equals(jCode)) {
 			uri = "board/boardUpdateForm";			
 		}

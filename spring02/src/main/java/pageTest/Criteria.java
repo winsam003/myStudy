@@ -28,10 +28,10 @@ import lombok.ToString;
 @ToString
 public class Criteria {
 
-	private int rowsPerPage;	// 1Page에 출력할 row 개수
-	private int currPage;		// 현재 출력해야 되는 페이지 (요청받은 페이지)
-	private int sno;			// start Row 순서번호: 계산필요
-	private int eno;			// end Row 순서번호: 계산필요(Oracle만 계산이 필요함 -> mysql은 limit이 있기때문에 계산이 필요 없음)
+	private int rowsPerPage;	// 1Page 당 출력할 게시글 수
+	private int currPage;		// 현재 출력해야 하는 페이지 (요청받은 페이지)
+	private int sno;			// 출력할 게시글의 첫 순서번호: 계산필요 (5개씩 출력하는 페이지의 3페이지인 경우 15일 것임 (limit는 16이 아니라 15여야 함))
+	private int eno;			// 출력할 게시글의 마지막 순서번호: 계산필요(Oracle만 계산이 필요함 -> mysql은 limit이 있기때문에 계산이 필요 없음)
 
 	// 1) 기본생성자 : 기본값 초기화
 	public Criteria() {

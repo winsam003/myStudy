@@ -26,7 +26,7 @@ public class PageMaker {
 	private int spageNo;					// View 에 표시할 첫 PageNo: 계산	(총 게시글이 20개이고 5개씩 출력할때 1페이지면 출력하는 [1 2 3] 중 spageNo은 1임)
 	private int epageNo;					// View 에 표시할 끝 PageNo: 계산	(총 게시글이 20개이고 5개씩 출력할때 1페이지면 출력하는 [1 2 3] 중 epageNo은 3임)
 	private int lastPageNo;					// 출력 가능한 마지막 PageNo		(총 게시글이 20개이고 5개씩 출력할때 lastPageNo은 4 / 4페이지가 마지막임)
-	
+	private String mappingName;
 											// 여기서 epageNo 은 4페이지를 출력할때 [4 5 6] 중 6이 될건데
 											// 만약 총 게시글이 20개라면 lastPageNo 은 4가 됨
 											// epageNo = 6 / lastPageNo = 4 으로 둘 이 다르므로 둘이 같은지 확인하는 코드가 필요 함
@@ -35,6 +35,12 @@ public class PageMaker {
 	private boolean prev;					// 이전 PageBlock 으로 
 	private boolean next;					// 다음 PageBlock 으로 
 	SearchCriteria cri;
+	
+	
+	public void setMappingName(String mappingName) {
+		this.mappingName = mappingName;
+	}
+	
 	
 	// ** 필요값 계산
 	// 1) Criteria
@@ -112,7 +118,7 @@ public class PageMaker {
 				.build();
 				
 		
-		return uriComponents.toString();				
+		return this.mappingName +  uriComponents.toString();				
 	} // makeQuery
 	
 	   // ** ver02
@@ -164,7 +170,7 @@ public class PageMaker {
 				.build();
 				
 		
-		return uriComponents.toString();	
+		return this.mappingName + uriComponents.toString();	
 	} // searchQuery
 	
 	

@@ -2,6 +2,9 @@ package mapperInterface;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import com.ncs.spring02.domain.MemberDTO;
 
 //** Mybatis 적용
@@ -23,6 +26,13 @@ import com.ncs.spring02.domain.MemberDTO;
 
 public interface MemberMapper {
 	
+	@Select("select * from member where id = #{id}")
+	MemberDTO selectDTO(MemberDTO dto);
+	
+	
+	@Select("select * from member where id = #{ii} and jno=#{jno}")
+	MemberDTO selectParam(@Param("ii") String id, @Param("jno") int jno);
+	
 	// ** selectList
 	List<MemberDTO> selectList(); // selectList
 
@@ -42,5 +52,6 @@ public interface MemberMapper {
 	int delete(String id); // delete
 	
 	List<MemberDTO> selectJoList(int jno);
+	
 	
 }

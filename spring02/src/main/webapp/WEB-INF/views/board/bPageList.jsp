@@ -21,7 +21,8 @@
 
 function searchDB(){
 	self.location='bPageList'
-					+'${pageMaker.makeQuery(1)}'
+					+ '?currPage=1&rowsPerPage=5'
+					/* +'${pageMaker.makeQuery(1)}' */
 					+ '&searchType='+document.getElementById('searchType').value
 					+ '&keyword='+document.getElementById('keyword').value;
 }					// 현재출력할페이지 + 출력할페이지의게시글수 + 검색한타입 + 검색한단어
@@ -151,8 +152,8 @@ function checkClear(){
      	<!-- ver01: makeQuery 메서드 사용 -->
 <%--      		<a href="bPageList${pageMaker.makeQuery(1)}">FP</a>&nbsp;
      		<a href="bPageList${pageMaker.makeQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp; --%>
-     		<a href="bPageList${pageMaker.searchQuery(1)}">FP</a>&nbsp;
-     		<a href="bPageList${pageMaker.searchQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp;
+     		<a href="${pageMaker.searchQuery(1)}">FP</a>&nbsp;
+     		<a href="${pageMaker.searchQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp;
      	</c:when>
      	<c:otherwise>
      		<font color="Gray">FP</font>&nbsp;
@@ -168,15 +169,15 @@ function checkClear(){
 			<font color="Orange" size="5"><b>${i}</b></font>&nbsp;
 		</c:if>
 		<c:if test="${i!=pageMaker.cri.currPage}">
-			<a href="bPageList${pageMaker.searchQuery(i)}">${i}</a>&nbsp;
+			<a href=${pageMaker.searchQuery(i)}">${i}</a>&nbsp;
 		</c:if>
 	</c:forEach>
 
 <!-- 3) Next, LastPage -->
       <c:choose>
       	<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
-      		&nbsp;<a href="bPageList${pageMaker.searchQuery(pageMaker.epageNo+1)}">&GT;</a>
-      		&nbsp;<a href="bPageList${pageMaker.searchQuery(pageMaker.lastPageNo)}">LP</a>
+      		&nbsp;<a href="${pageMaker.searchQuery(pageMaker.epageNo+1)}">&GT;</a>
+      		&nbsp;<a href="${pageMaker.searchQuery(pageMaker.lastPageNo)}">LP</a>
       	</c:when>
       	<c:otherwise>
       	    &nbsp;<font color="Gray">&GT;</font>

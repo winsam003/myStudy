@@ -44,4 +44,17 @@
         <url-pattern>/*</url-pattern>
    </filter-mapping>
 
+	
+	
+		<!-- Exception Test1 : 응답상태코드 -->
+<!-- 	<error-page>
+		<error-code>404</error-code>	이 에러코드에 대해서
+		<location>/WEB-INF/views/errorPage/exception_404.jsp</location>		얘로 대응해라 라는 의미임
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>	이 에러코드에 대해서
+		<location>/WEB-INF/views/errorPage/exception_500.jsp</location>		얘로 대응해라 라는 의미임
+	</error-page> -->
+
+
 </web-app>

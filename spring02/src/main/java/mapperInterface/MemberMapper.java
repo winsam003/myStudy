@@ -5,7 +5,10 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.domain.MemberDTO;
+
+import pageTest.SearchCriteria;
 
 //** Mybatis 적용
 //=> CRUD 처리를 Mapper 를 이용
@@ -53,5 +56,14 @@ public interface MemberMapper {
 	
 	List<MemberDTO> selectJoList(int jno);
 	
+	public List<MemberDTO> mSearchList(SearchCriteria cri);
+	
+	public int mSearchRowsCount(SearchCriteria cri);
+	
+	// ** mCheckList
+	public List<MemberDTO> mCheckList(SearchCriteria cri);
+	
+	// ** mCheckRowsCount
+	public int mCheckRowsCount(SearchCriteria cri);
 	
 }

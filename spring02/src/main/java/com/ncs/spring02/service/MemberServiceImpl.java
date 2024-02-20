@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.domain.MemberDTO;
 
 import mapperInterface.MemberMapper;
+import pageTest.SearchCriteria;
 
 
 
@@ -65,6 +67,30 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public int pwUpdate(MemberDTO dto) {
 		return mapper.pwUpdate(dto);
+	}
+	
+	@Override
+	public List<MemberDTO> mPageList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return mapper.mSearchList(cri);
+	}
+	
+	@Override
+	public int totalRowsCount(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return mapper.mSearchRowsCount(cri);
+	}
+	
+	@Override
+	public List<MemberDTO> mCheckList(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return mapper.mCheckList(cri);
+	}
+	
+	@Override
+	public int mCheckRowsCount(SearchCriteria cri) {
+		// TODO Auto-generated method stub
+		return mapper.mCheckRowsCount(cri);
 	}
 	
 	

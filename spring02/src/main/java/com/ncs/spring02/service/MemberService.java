@@ -2,7 +2,10 @@ package com.ncs.spring02.service;
 
 import java.util.List;
 
+import com.ncs.spring02.domain.BoardDTO;
 import com.ncs.spring02.domain.MemberDTO;
+
+import pageTest.SearchCriteria;
 
 public interface MemberService {
 
@@ -25,5 +28,15 @@ public interface MemberService {
 	int delete(String id); // delete
 	
 	List<MemberDTO> selectJoList(int jno);
+	
+	public List<MemberDTO> mPageList(SearchCriteria cri);
+	
+	public int totalRowsCount(SearchCriteria cri);
+	
+	// ** mCheckList
+	public List<MemberDTO> mCheckList(SearchCriteria cri);
+	
+	// ** mCheckRowsCount
+	public int mCheckRowsCount(SearchCriteria cri);
 
 }

@@ -38,4 +38,89 @@
 		select * from member where jno = #{jno}
 	</select>
 	
+	
+	<select id="mPageList" resultType="com.ncs.spring02.domain.MemberDTO">
+		select * from member limit #{sno}, #{rowsPerPage}
+	</select>
+	
+	<select id="totalRowsCount" resultType="int">
+		select count(*) from member;
+	</select>
+	
+	
+	
+	
+	
+		<select id="mCheckList" resultType="com.ncs.spring02.domain.MemberDTO">
+		select * from member
+		
+		<if test="check!=null">
+			where jno in
+			<foreach collection="check" item="it" open="(" close=")" separator=",">
+				#{it}
+			</foreach>	
+		</if>
+		limit #{sno}, #{rowsPerPage}
+	</select>
+	
+	<select id="mCheckRowsCount" resultType="int">
+		select count(*) from member
+		<if test="check!=null">
+			where jno in
+			<foreach collection="check" item="it" open="(" close=")" separator=",">
+				#{it}
+			</foreach>	
+		</if>
+	
+	</select>
+	
+	
+	
+	
+	
+	
+
+	
+	<sql id="search">
+	<!-- 1) CONCAT('%', #{keyword}, '%') 처리 -->
+		<if test="keyword!=null">
+			<bind name="keyval" value="'%'+keyword+'%'"/>
+		</if>
+	
+	<!-- 2) Like 조건문 처리 -->
+		<choose>
+			<when test="searchType=='all' and keyword!=null">
+				<!-- id, name, age 에서 keyword가 포함된 글 목록 -->
+				and ( id LIKE #{keyval}
+				OR name LIKE #{keyval}
+				OR age LIKE #{keyval} 
+				OR jno LIKE #{keyval}
+				OR info LIKE #{keyval} 
+				OR point LIKE #{keyval}
+				OR birthday LIKE #{keyval} 
+				OR rid LIKE #{keyval}
+				))
+			</when>
+			<when test="searchType!=null and keyword!=null">
+				<!-- searchType이 컬럼명이인 경우 -->
+				and ${searchType} LIKE #{keyval} )
+			</when>
+			<otherwise>)</otherwise>
+		</choose>
+	
+	</sql>
+		
+	<select id="mSearchList" resultType="com.ncs.spring02.domain.MemberDTO">
+		select * from member 
+		
+		where ( jno>0 <include refid="search"></include>
+		
+		limit #{sno}, #{rowsPerPage}
+	</select>
+	
+	<select id="mSearchRowsCount" resultType="int">
+		select count(*) from member
+		where ( jno>0 <include refid="search"></include>
+	</select>
+	
 </mapper>

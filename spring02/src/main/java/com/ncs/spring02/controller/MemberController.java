@@ -24,17 +24,88 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ncs.spring02.domain.MemberDTO;
 import com.ncs.spring02.service.MemberService;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j;
+import pageTest.PageMaker;
+import pageTest.SearchCriteria;
+
 @Controller
+@Log4j
+@AllArgsConstructor	// 개별적으로 autowired를 안해도 됨
 @RequestMapping(value = "/member")
 public class MemberController {
 
-	@Autowired(required = false)
+//	@Autowired(required = false)
 	MemberService service;
 	
-	@Autowired
+//	@Autowired
 	PasswordEncoder passwordEncoder;
-	// = new BCryptPasswordEncoder();
-	//		-> root-context.xml 에 bean 등록했음
+	
+	// ** Lombok @Log4j Test
+	@GetMapping("/log4jTest")
+	public String log4jTest() {
+		String name = "banana";
+		
+		log.error("** Lombok @Log4j Test error= "+name);
+		log.warn("** Lombok @Log4j Test warn= "+name);
+		log.info("** Lombok @Log4j Test info= "+name);
+		log.debug("** Lombok @Log4j Test debug= "+name);
+		log.trace("** Lombok @Log4j Test trace= "+name);
+		
+		
+		return "redirect:/";
+	}
+	
+	@GetMapping("/mCheckList")
+	public String mCheckList(HttpServletRequest request, Model model, SearchCriteria cri, PageMaker pageMaker) {
+		
+		String uri= "member/mPageList";
+		String mappingName = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
+		
+		// 1) Criteria 처리
+		cri.setSnoEno();
+		
+		// 2) Service
+	    // => check 의 값을 선택하지 않은경우 check 값을 null 로 확실하게 해줘야함.
+	    //    mapper 에서 명확하게 구분할수 있도록해야 정확한 저리가능  
+		if(cri.getCheck() != null && cri.getCheck().length<1)
+			cri.setCheck(null);
+		
+		model.addAttribute("banana", service.mCheckList(cri));
+		
+		// 3) View처리: PageMaker 이용
+		pageMaker.setCri(cri);
+		pageMaker.setMappingName(mappingName);
+		pageMaker.setTotalRowsCount(service.mCheckRowsCount(cri));
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return uri;
+	} // mCheckList
+	
+	
+	
+	
+	@GetMapping("/mPageList")
+	public void mPageList(HttpServletRequest request, Model model, SearchCriteria cri, PageMaker pageMaker) {
+		// 1) Criteria 처리
+		cri.setSnoEno();
+		String mappingName = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
+		
+		// 2) Service
+		model.addAttribute("banana", service.mPageList(cri));
+		
+		// 3) View 처리 : PageMaker를 활용
+		pageMaker.setCri(cri);
+		pageMaker.setMappingName(mappingName);
+		pageMaker.setTotalRowsCount(service.totalRowsCount(cri));
+		// 여기서 cri 매개변수는 현재는 필요없으나 검색같은걸 하려면 필요함
+		model.addAttribute("pageMaker", pageMaker);
+		
+		
+	} // mPageList
+	
+	
+	
 	
 	// ** ID 중복확인
 	@GetMapping("/idDupCheck")
@@ -155,7 +226,23 @@ public class MemberController {
 	
 	
 	
-	
+    // ** *****************************************
+    // ** Transaction_AOP 적용 ********************* 
+    // 1. 준비: pom.xml (dependency) 확인
+    // =>  AspectJ(기본제공), AspectJ Weaver(추가)
+    
+    // 2. servlet-context.xml AOP 설정
+    
+    // 3. Rollback Test
+      // 3.1) Aop xml 적용전 => insert1 은 입력되고, insert2 에서  500_Dupl..Key  오류 발생
+      // 3.2) Aop xml 적용후 => insert2 에서 오류발생시 모두 Rollback 되어 insert1, insert2 모두 입력 안됨 
+    
+      // 3.1) Transaction 적용전 : 동일자료 2번 insert
+     // => 첫번째는 입력완료(commit) 되고, 두번째자료 입력시 Key중복 오류발생 (500 발생)
+    // 3.2) Transaction 적용후 : 동일자료 2번 insert
+     // => 첫번째는 입력완료 되고, 두번째 자료입력시 Key중복 오류발생 하지만,
+     //    rollback 되어 둘다 입력 안됨
+    //service.insert(dto); // Transaction_Test, insert1 
 	
 	// ** Join
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
@@ -230,6 +317,8 @@ public class MemberController {
 		dto.setUploadfile(file2);
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		
+		
+//		service.insert(dto);			// 트랜젝션 테스트 이중 insert 코드
 		// 2. Service & and 결과
 		if(service.insert(dto) > 0) {
 			// 성공

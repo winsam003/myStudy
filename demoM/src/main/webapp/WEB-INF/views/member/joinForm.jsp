@@ -252,7 +252,7 @@ function inCheck(){
 </head>
 <body>
 
-	<form action="join" method="post" class="form" enctype="multipart/form-data" >
+	<form action="join" method="post" class="form" enctype="multipart/form-data" id="myform">
 		<table>
 			<caption>회원가입</caption>
 
@@ -317,7 +317,8 @@ function inCheck(){
 			</tr>
 			<tr height="40">
 				<th bgcolor="MediumPurple"><label for="rid">추천인</label></th>
-				<td><input type="text" id="rid" name="rid" size="70" style="height:40px;"></td>
+				<td><input type="text" id="rid" name="rid" size="70" style="height:40px;">
+				</td>
 			</tr>
 			<!-- fileUpload 기능 추가 -->
 			<!--  ** FileUpLoad Form **
@@ -375,7 +376,7 @@ function inCheck(){
                예) button 을 선택하면 submit 은 실행되지않음   
             => Enter_Key : form 내부에서 누르면 submit 와 동일하게 작동 됨
                -->
-               
+               <span class="textlink" onclick="axiJoin()">axiJoin</span>&nbsp;&nbsp;
 			</tr>
 		</table>
 

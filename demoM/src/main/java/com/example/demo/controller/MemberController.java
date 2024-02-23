@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +42,38 @@ public class MemberController {
 	
 //	@Autowired
 	PasswordEncoder passwordEncoder;		// Democonfig에서 생성
+	
+	
+	@GetMapping("/axPageList")
+	public String axPageList(HttpServletRequest request, Model model, SearchCriteria cri, PageMaker pageMaker) {
+		// 1) Criteria 처리
+		cri.setSnoEno();
+		String mappingName = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
+		
+		// 2) Service
+		model.addAttribute("banana", service.mPageList(cri));
+		
+		// 3) View 처리 : PageMaker를 활용
+		pageMaker.setCri(cri);
+		pageMaker.setMappingName(mappingName);
+		pageMaker.setTotalRowsCount(service.totalRowsCount(cri));
+		// 여기서 cri 매개변수는 현재는 필요없으나 검색같은걸 하려면 필요함
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "axTest/axPageList";
+	} // mPageList
+	
+	
+	// ** axiMList
+	@GetMapping("/axiMList")
+	public String axiMList(Model model) {
+		
+		model.addAttribute("banana", service.selectList());
+		
+		return "axTest/axMemberList";
+	}
+	
+	
 	
 	// ** Lombok @Log4j Test
 	@GetMapping("/log4jTest")

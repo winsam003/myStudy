@@ -11,6 +11,7 @@
 <script src="/resources/myLib/axTest01.js" ></script>
 <script src="/resources/myLib/axTest02.js" ></script>
 <script src="/resources/myLib/axTest03.js" ></script>
+<script src="/resources/myLib/axTest04.js" ></script>
 </head>
 <body>
 <h2>** AjaxTest Main Form **</h2>
@@ -25,6 +26,7 @@
 &nbsp;<span class="textlink" onclick="rsLoginf()">rsLogin</span>&nbsp;
 &nbsp;<span class="textlink" onclick="rsJoinf()">rsJoin</span>&nbsp;
 &nbsp;<span class="textlink" onclick="axiMList()">axiMList</span>&nbsp;	
+&nbsp;<span class="textlink" onclick="axPageList()">axPageList</span>&nbsp;	
 &nbsp;<a href="/home" >[Home]</a>  
 <hr>
 <div id="resultArea1"></div>

@@ -37,5 +37,6 @@ public interface MemberService {
 	
 	// ** mCheckRowsCount
 	public int mCheckRowsCount(SearchCriteria cri);
+	
 
 }

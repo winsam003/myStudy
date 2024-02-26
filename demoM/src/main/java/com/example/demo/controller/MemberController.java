@@ -44,6 +44,35 @@ public class MemberController {
 	PasswordEncoder passwordEncoder;		// Democonfig에서 생성
 	
 	
+	// ** Ajax Member_Paging
+	// => ver01 : "axmcri" 만 구현 (Search 기능만 구현)
+	// => ver02 : "/axmcheck" 요청도 처리 가능하도록 구현
+	//			-> mappingName 에 "check"가 포함 돼 있다면 check 요청 기능 실행 (service.mCheckList(cri), service.mCheckRowsCount(cri))
+	@GetMapping({"/axmcri", "/axmcheck"})
+	public String axmcri(HttpServletRequest request, Model model, SearchCriteria cri, PageMaker pageMaker) {
+		// 1) Criteria 처리
+		cri.setSnoEno();
+		String mappingName = request.getRequestURI().substring(request.getRequestURI().lastIndexOf("/")+1);
+		
+		// 2) 요청확인 & 서비스처리
+		pageMaker.setCri(cri);
+		pageMaker.setMappingName(mappingName);
+		
+		if(mappingName.contains("check")) {
+			model.addAttribute("banana", service.mCheckList(cri));
+			pageMaker.setTotalRowsCount(service.mCheckRowsCount(cri));
+		}else {
+			model.addAttribute("banana", service.mPageList(cri));
+			pageMaker.setTotalRowsCount(service.totalRowsCount(cri));
+		}
+		
+		// 여기서 cri 매개변수는 현재는 필요없으나 검색같은걸 하려면 필요함
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "axTest/axmPageList";
+	} // mPageList
+	
+	
 	@GetMapping("/axPageList")
 	public String axPageList(HttpServletRequest request, Model model, SearchCriteria cri, PageMaker pageMaker) {
 		// 1) Criteria 처리
@@ -60,7 +89,7 @@ public class MemberController {
 		// 여기서 cri 매개변수는 현재는 필요없으나 검색같은걸 하려면 필요함
 		model.addAttribute("pageMaker", pageMaker);
 		
-		return "axTest/axPageList";
+		return "axTest/axmPageList";
 	} // mPageList
 	
 	

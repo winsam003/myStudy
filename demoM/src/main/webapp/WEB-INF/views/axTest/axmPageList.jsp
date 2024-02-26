@@ -10,40 +10,6 @@
 	href="/resources/myLib/myStyle.css">
 
 
-<script>
-	"use strict"
-	// 1. 검색조건 입력 후 버튼 클릭
-	//	=> 입력 값들을 서버로 보내서 입력값과 비교할 것임: location
-	// ** self.location   
-	// 1) location 객체 직접사용 Test : url로 이동, 히스토리에 기록됨
-	// 2) location 객체의 메서드
-	// => href, replace('...'), reload() 
-
-	function searchDB() {
-		self.location = 'mPageList' + '?currPage=1&rowsPerPage=5'
-		/* +'${pageMaker.makeQuery(1)}' */
-		+ '&searchType=' + document.getElementById('searchType').value
-				+ '&keyword=' + document.getElementById('keyword').value;
-	} // 현재출력할페이지 + 출력할페이지의게시글수 + 검색한타입 + 검색한단어
-
-	// 2. searchType을 '전체' 로 변경하면 keyword는 clear
-	function keywordClear() {
-		if (document.getElementById('searchType').value == 'all') {
-			document.getElementById('keyword').value = '';
-		}
-	}
-
-	function checkClear() {
-		let ck = document.querySelectorAll('.clear');
-
-		for (let i = 0; i < ck.length; i++) {
-			ck[i].checked = false;
-		}
-		return false; // reset의 기본이벤트 제거
-
-	}
-</script>
-
 </head>
 <body>
 
@@ -71,7 +37,7 @@
 
 		<hr>
 
-		<form action="mCheckList" method="get">
+ 		<form action="axmcheck" method="get">
 			<b>ID : </b>
 			<!-- check 의 선택한 값 유지를 위한 코드 -->
 			<c:set var="ck1" value="false" />
@@ -101,10 +67,10 @@
 			<input type="checkbox" name="check" class="clear" value="2" ${ck2 ? 'checked' : ''}>static&nbsp; 
 			<input type="checkbox" name="check" class="clear" value="3" ${ck3 ? 'checked' : ''}>칭찬해조&nbsp;
 			<input type="checkbox" name="check" class="clear" value="4" ${ck4 ? 'checked' : ''}>카톡으로얘기하조&nbsp; 
-			<input type="checkbox" name="check" class="clear" value="5" ${ck5 ? 'checked' : ''}>칠면조&nbsp; 
-			<input type="submit" value="Search">&nbsp; 
+			<input type="checkbox" name="check" class="clear" value="7" ${ck5 ? 'checked' : ''}>칠면조&nbsp; 
+			<button type="button" onclick="CheckDB()">Search</button>&nbsp; 
 			<input type="reset" value="Clear" onclick="return checkClear()"><br>
-		</form>
+ 		</form> 
 
 		<hr>
 	</div>
@@ -166,8 +132,8 @@
 				<!-- ver01: makeQuery 메서드 사용 -->
 				<%--      		<a href="bPageList${pageMaker.makeQuery(1)}">FP</a>&nbsp;
      		<a href="bPageList${pageMaker.makeQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp; --%>
-				<a href="${pageMaker.searchQuery(1)}">FP</a>&nbsp;
-     		<a href="${pageMaker.searchQuery(pageMaker.spageNo-1)}">&LT;</a>&nbsp;&nbsp;
+				<span class="textlink" onclick="axiMListCri('${pageMaker.searchQuery(1)}')">FP</span>&nbsp;
+	     		<span class="textlink" onclick="axiMListCri('${pageMaker.searchQuery(pageMaker.spageNo-1)}')">&LT;</span>&nbsp;
      	</c:when>
 			<c:otherwise>
 				<font color="Gray">FP</font>&nbsp;
@@ -184,15 +150,15 @@
 				<font color="Orange" size="5"><b>${i}</b></font>&nbsp;
 		</c:if>
 			<c:if test="${i!=pageMaker.cri.currPage}">
-				<a href="${pageMaker.searchQuery(i)}">${i}</a>&nbsp;
+				<span class="textlink" onclick="axiMListCri('${pageMaker.searchQuery(i)}')">${i}</span>&nbsp;
 		</c:if>
 		</c:forEach>
 
 		<!-- 3) Next, LastPage -->
 		<c:choose>
 			<c:when test="${pageMaker.next && pageMaker.epageNo>0}">
-      		&nbsp;<a href="${pageMaker.searchQuery(pageMaker.epageNo+1)}">&GT;</a>
-      		&nbsp;<a href="${pageMaker.searchQuery(pageMaker.lastPageNo)}">LP</a>
+      		<span class="textlink" onclick="axiMListCri('${pageMaker.searchQuery(pageMaker.epageNo+1)}')">&GT;</span>&nbsp;
+      		<span class="textlink" onclick="axiMListCri('${pageMaker.searchQuery(pageMaker.lastPageNo)}')">LP</span>&nbsp;
 			</c:when>
 			<c:otherwise>
       	    &nbsp;<font color="Gray">&GT;</font>

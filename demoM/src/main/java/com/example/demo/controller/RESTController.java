@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.domain.BoardDTO;
 import com.example.demo.domain.JoDTO;
 import com.example.demo.domain.MemberDTO;
 import com.example.demo.domain.UserDTO;
+import com.example.demo.service.BoardService;
 import com.example.demo.service.JoService;
 import com.example.demo.service.MemberService;
 
@@ -130,6 +134,7 @@ public class RESTController {
 	
 	MemberService service;
 	JoService jservice;
+	BoardService bservice;
 	
 	PasswordEncoder passwordEncoder;			// DemoConfig 에 생성 설정 (Bean)
 	
@@ -497,5 +502,46 @@ public class RESTController {
 			}
 		   return result;
 	   } // rsjoin
+	   
+	   
+	   
+	   @GetMapping("/idbList/{id}")
+	   public ResponseEntity<?> idblist(@PathVariable("id") String id){
+		   ResponseEntity<?> result = null;
+		   
+		   List<BoardDTO> list = bservice.idblist(id);
+		   
+		   // 출력할 데이터가 있는지 없는지 확인해야 함
+		   
+		   if(list != null && list.size()>0) {
+			   result = ResponseEntity.status(HttpStatus.OK).body(list);
+			   log.info("** idblist HttpStatus.OK => "+HttpStatus.OK);
+		   }else {
+			   result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("출력 할 Data가 없습니다.");
+			   log.info("** idblist HttpStatus.Bad_GATEWAY => "+HttpStatus.BAD_GATEWAY);
+		   }
+		   return result;
+	   }
+	   
+	   
+	   @DeleteMapping("/axiDelete/{id}")
+	   public ResponseEntity<?> axiDelete(@PathVariable("id") String id) {
+		   ResponseEntity<String> result = null;
+		   log.info(id);
+		   
+		   if(service.delete(id) > 0) {
+			   result = ResponseEntity.status(HttpStatus.OK).body("삭제성공");
+			   log.info(HttpStatus.OK);
+		   }else {
+			   result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("삭제실패");
+			   log.info(HttpStatus.BAD_GATEWAY);
+		   }
+		   
+		   return result;
+	   }
+	   
+	   
+	   
+	   
 	
 } // class

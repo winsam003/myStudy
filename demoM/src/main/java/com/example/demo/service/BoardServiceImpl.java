@@ -82,4 +82,13 @@ public class BoardServiceImpl implements BoardService {
 		return mapper.bCheckRowsCount(cri);
 	}
 	
+	@Override
+	public List<BoardDTO> idblist(String id) {
+		// TODO Auto-generated method stub
+		return mapper.idblist(id);
+	}
+	
+
+	
+	
 }

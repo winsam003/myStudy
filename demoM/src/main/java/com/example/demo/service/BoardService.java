@@ -38,4 +38,9 @@ public interface BoardService {
 	// ** delete
 	public int delete(BoardDTO dto);
 
+	// ** idblist
+	public List<BoardDTO> idblist(String id);
+	
+
+	
 }

@@ -541,6 +541,23 @@ public class RESTController {
 	   }
 	   
 	   
+	   @GetMapping("/jodetail/{jno}")
+	   public ResponseEntity<?> axiDelete(@PathVariable("jno") int jno) {
+		   ResponseEntity<JoDTO> result = null;
+		   
+		   JoDTO dto = jservice.selectOne(jno);
+		   
+		   if(dto != null) {
+			   result = ResponseEntity.status(HttpStatus.OK).body(dto);
+			   log.info(HttpStatus.OK);
+		   }else {
+			   result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(dto);
+			   log.info(HttpStatus.BAD_GATEWAY);
+		   }
+		   
+		   return result;
+	   }
+	   
 	   
 	   
 	

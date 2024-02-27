@@ -20,7 +20,7 @@
 <c:if test="${!empty requestScope.userList}"></c:if>
 	<c:forEach var="list" items="${requestScope.userList}">
 		<tr>
-			<td>${list.id}</td>
+			<td><span class="textlink" onclick="userDetail('${list.id}')">${list.id}</span></td>
 			<td>${list.name}</td>
 			<td>${list.age}</td>
 			<td>${list.jno}</td>

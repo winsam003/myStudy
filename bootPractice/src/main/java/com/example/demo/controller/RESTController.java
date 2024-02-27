@@ -1,11 +1,12 @@
 package com.example.demo.controller;
 
-import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.domain.UserDTO;
@@ -22,17 +23,17 @@ public class RESTController {
 	
 	UserService Uservice;
 	
-	@GetMapping("/userList")
-	public ResponseEntity<?> userList(){
-		ResponseEntity<List> result = null;
+	@GetMapping("/userDetail/{id}")
+	public ResponseEntity<?> userDetail(@PathVariable("id") String id, UserDTO dto){
+		ResponseEntity<UserDTO> result = null;
 		
-		List<UserDTO> list = Uservice.userList();
+		dto = Uservice.userDetail(id);
 		
-		if(list != null) {
-			result = ResponseEntity.status(HttpStatus.OK).body(list);
+		if(dto != null) {
+			result = ResponseEntity.status(HttpStatus.OK).body(dto);
 			log.info("UserList lead 성공");
 		}else {
-			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(list);
+			result = ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(dto);
 			log.info("UserList lead 실패");
 		}
 		return result;

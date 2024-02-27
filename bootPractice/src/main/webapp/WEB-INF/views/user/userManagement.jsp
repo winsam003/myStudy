@@ -7,12 +7,13 @@
 <title>UserManagement</title>
 <script src="/resources/myLib/userManagement.js" ></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/resources/myLib/style.css">
 </head>
 <body>
 <h2>UserManagement</h2>
 <hr>
 
-&nbsp;<span onclick="userList()">UserList</span>&nbsp;
+&nbsp;<span class="textlink" onclick="userList()">UserList</span>&nbsp;
 
 <hr>
 <div id="textArea01"></div>

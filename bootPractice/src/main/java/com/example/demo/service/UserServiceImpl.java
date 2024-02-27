@@ -20,4 +20,10 @@ public class UserServiceImpl implements UserService{
 		// TODO Auto-generated method stub
 		return mapper.userList();
 	}
+	
+	@Override
+	public UserDTO userDetail(String id) {
+		// TODO Auto-generated method stub
+		return mapper.userDetail(id);
+	}
 }

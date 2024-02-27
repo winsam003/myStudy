@@ -1,0 +1,10 @@
+@charset "UTF-8";
+
+
+.textlink { color:Blue; font-weight:bold; }
+.textlink:hover { 
+	color:DeepSkyBlue; 
+	font-size:1.2em; 
+	font-weight:bold;
+	cursor:pointer;
+}

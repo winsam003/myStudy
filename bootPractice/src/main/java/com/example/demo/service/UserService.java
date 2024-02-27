@@ -7,4 +7,7 @@ import com.example.demo.domain.UserDTO;
 public interface UserService {
 	
 	public List<UserDTO> userList();
+	
+	public UserDTO userDetail(String id);
+	
 }

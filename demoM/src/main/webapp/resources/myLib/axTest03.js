@@ -4,73 +4,6 @@
 
 'use strict'
 
-// 2.3) JoDetail
-// 2.3.1)  MouseOver: showJoDetail
-// => jno 에 mouse를 over하게되면 joDetail을 출력 함 (content Div 에 출력) (마우스포인터 위치에)
-// => request: axios, get, RESTContoller 에 "/jodetail" 요청
-// => response: 성공시 JoDTO 객체
-function showJoDetail(e, jno){
-	// ** 마우스포인터 위치 확인
-   // => 이벤트객체 활용
-   //     - event객체 (이벤트핸들러 첫번째 매개변수) 가 제공
-   //     - event객체 프로퍼티: type, target, preventDefault() 등 (JS 9장_Event.pptx 28p)   
-   //    - e.pageX, e.pageY : 전체 Page 기준 (절대기준 좌표)
-   //     - e.clientX, e.clientY : 보여지는 화면 기준-> page Scroll 시에 불편함 (내가 지금 어디를 보고있는가 기준)
-	let url="/rest/jodetail/"+jno;
-	let mleft=e.pageX+20;
-	let mtop=e.pageY;
-	
-	axios.get(url
-	).then(response => {
-		
-		
-		// stringify를 하기전에 response.data를 그냥 출력하면 object로만 나오지만 아래와 같이 stringify로 data를 변환해서 console 찍으면 데이터값이 json형태로 나옴
-		console.log(`** response 성공 => ${JSON.stringify(response.data)}`);
-		let jo = response.data;
-		
-		
-		let resultHtml = `
-			<table>
-				<tr><td>${jo.jno}</td></tr>
-				<tr><td>${jo.jname}</td></tr>
-				<tr><td>${jo.captain}</td></tr>
-				<tr><td>${jo.project}</td></tr>
-				<tr><td>${jo.slogan}</td></tr>
-			</table>
-			`;
-			
-			document.getElementById('content').innerHTML = resultHtml;
-			document.getElementById('content').style.display = 'block';
-			document.getElementById('content').style.visibility = 'visible';
-			document.getElementById('content').style.left = mleft+'px';
-			document.getElementById('content').style.top = mtop+'px';
-					
-	}).catch(err => {
-		if(err.response.status == '502') alert(err.response.data);
-		else alert("** Jno mouceOver 시스템 오류, 잠시후 다시 실행해주세요(￣ ‘i ￣;)(￣ ‘i ￣;) => " + err.message);
-	});
-	
-	
-} // showJoDetail
-
-
-
-// 2.3.2)  MouseOut: hideJoDetail
-// => 화면에 표시되어있단 content Div 가 사라짐
-function hideJoDetail(){
-	
-	document.getElementById('content').innerHTML = '';
-	document.getElementById('content').style.visibility = 'hidden';
-	
-	
-} // hideJoDetail
-
-
-
-
-
-
-
 // 1.2) idbList (id 별 boardList)
 // => RESTContoller, PathVariable 처리, List_Data response
 // => Server : service, Sql 구문이 필요
@@ -86,7 +19,7 @@ function hideJoDetail(){
 // => response: 성공/실패 여부만 전달 받음 그러므로 RESTController를 사용
 // => 성공: Deleted 로 변경, onclick 이벤트 해제
 
-function axiDelete(e, id){
+function axiDelete(id){
 	let url = "/rest/axiDelete/"+id;
 	
 	axios.delete(url
@@ -95,21 +28,13 @@ function axiDelete(e, id){
 		alert(response.data);
 		let del = document.getElementById(id);
 		
-		e.target.innerHTML = '';
-		e.target.innerHTML = 'Deleted';
-		e.target.style.color = 'gray';
-		e.target.style.fontWeight = 'bold';
-		
-		e.target.classList.remove('textlink');
-		e.target.removeAttribute('onclick');
-		
-/*		del.innerHTML = '';
+		del.innerHTML = '';
 		del.innerHTML = 'Deleted';
 		del.style.color = 'gray';
 		del.style.fontWeight = 'bold';
 		
 		del.classList.remove('textlink');
-		del.removeAttribute('onclick');*/
+		del.removeAttribute('onclick');
 	}).catch(err => {
 		if(err.response.status == '502') alert(err.response.data);
 		else alert("** 시스템 오류, 잠시후 다시 실행해주세요(￣ ‘i ￣;)(￣ ‘i ￣;) => " + err.message);
@@ -161,15 +86,6 @@ function idbList(id) {
 
 	});
 }
-      // ** for 간편출력 : of, in
-      // => in: undifined 는 통과하고, 배열(index Return), 객체(속성명 Return)
-      // => of: undifined 까지 모두출력 (순차출력과 동일), value 를 return, 
-      //        ES6 에 for ~ in 의 단점을 보완 개선하여 추가됨.
-      //        일반 객체에는 적용안되지만, (오류발생, 개발자모드로 확인가능)
-      //         Array, String, Map, Set, function의 매개변수 객체 와
-      //        이터러블 규약을 따르는 이터러블 객체 (Iterable Object) 는 적용됨
-      // => 이터러블 규약
-      //      내부에 Symbol.iterator (줄여서 @@iterator로 표현하기도함) 메서드가 구현되어 있어야 한다는 규약 
 
 
 

@@ -8,7 +8,7 @@ import com.example.demo.domain.UserDTO;
 
 public interface UserMapper {
 
-	@Select("select * from user")
+//	@Select("select * from user")
 	public List<UserDTO> userList();
 	
 }

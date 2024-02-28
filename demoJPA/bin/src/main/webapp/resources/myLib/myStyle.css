@@ -1,0 +1,84 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Kalam:wght@300;400;700&family=Poiret+One&family=Poor+Story&display=swap');
+/* Link Button 만들기 */
+
+* {
+  font-family: "Poor Story", system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.button {
+	width:140px; height:50px; background-color: aqua;
+	border: 10px solid lightgray; /* 단축속성: 두께 style color */
+	border-radius:20px; text-align: center;
+	}	
+/* button 에 속해있는 모든 aTag */
+.button a { line-height:50px; }
+	
+/* 모든 a Tag	 */
+a { color: Gray; text-decoration: none; font-weight:bold; } 
+a:hover { color:DimGray; font-size:1.2em; cursor:pointer; }
+a:active { color:Blue; }
+
+/* Error Message */
+.eMessage {
+	color: red;
+	font-size: medium;
+	font-style: italic;
+	margin-left: 10px;
+}
+ /* Span MenuLink */
+.textlink { color:Blue; font-weight:bold; }
+.textlink:hover { 
+	color:DeepSkyBlue; 
+	font-size:1.2em; 
+	font-weight:bold;
+	cursor:pointer;
+}
+
+/* Ajax_jsonView BoardList Test3. 
+=> .content : span , #content : div
+=> div 초기값 : 화면표시X, 좌표기준, 글내용은 무조건 표시 
+*/
+.content { color: Teal; background: AliceBlue; }
+#content {
+	display:none;
+	position:absolute;
+	z-index:100;
+	width:300px;
+	height:140px; 
+	color: SaddleBrown;
+	background: Beige;
+}
+/*  Check  List searchBar */
+#searchBar {
+	color:DimGray ; font-family:돋움; font-size:14px;
+	float: left;
+}
+
+.form{
+	display: flex;
+	justify-content: center;
+}
+
+input{
+	border-radius: 15px;
+}
+
+th{
+	border-radius: 15px;
+	font-weight: bold;
+	width: 100px;
+}
+
+caption{
+	font-size: 30px;
+	font-weight: bold;
+}
+
+#idDup{
+	width:80px; height:20px;
+	border-radius: 15px;
+}
+

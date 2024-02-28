@@ -51,7 +51,7 @@
 				<td>${requestScope.userDetail.rid}</td>
 			</tr>
 			<tr height="40">
-				<th bgcolor="BlueViolet">추천인</th>
+				<th bgcolor="BlueViolet">이미지</th>
 				<td><img alt="mainImage" src="/resources/uploadImages/${requestScope.userDetail.uploadfile}" width="300"height="200"></td>
 			</tr>
 

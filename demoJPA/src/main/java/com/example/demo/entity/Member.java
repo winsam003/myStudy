@@ -42,8 +42,8 @@ import lombok.NoArgsConstructor;
 // ** @Column(name="id", nullable=false, length=10)
 // => 프로퍼티의 이름과 테이블의 칼럼명 같다면 생략 가능하지만, 다른 경우에는 @Column 으로 지정
 // => 컬럼에 다양한 속성 지정 가능 (nullable, name, length, insertable, updatable 등) 
-// => JPA는 INSERT, UPDATE, DELETE의 동작이 보통과 다르기 때문에 예상치못한 실수를 방지하기 위해
-//     insertable 과 updateble 속성을 false로 하여 읽기전용 매핑설정을 할수있다.
+// => JPA는 INSERT, UPDATE, 이 보통과 다르기 때문에 예상치못한 실수를 방지하기 위해
+//     insertable 과 updateble 속성을 false로 DELETE의 동작하여 읽기전용 매핑설정을 할수있다.
 //     이렇게 하면 JPA가 자동으로 생성하는 쿼리에서 제외된다.
 // => columnDefinition 으로 default 값 지정 가능
 //    @Column(columnDefinition="varchar(10) default 'apple'")

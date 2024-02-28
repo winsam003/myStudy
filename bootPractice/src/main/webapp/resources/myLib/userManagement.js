@@ -1,5 +1,83 @@
 "use strict"
 
+// ** logout
+function logout(){
+	let url = "/user/logout";
+	
+	axios.get(url
+	).then(response => {
+		alert("로그아웃 되었습니다.");
+		location.reload();
+	}).catch(err => {
+		alert("시스템 오류, 관리자에게 문의하세요. ["+err.response.status+"]");
+		console.log(err.message);
+	});
+	
+} // logout
+
+
+// ** login
+function login(){
+	
+	
+	let url = "/rest/login"
+	axios({
+		url:url,
+		method:'post',
+		headers:{'content-type': 'application/json'},
+		data:{
+			id: document.getElementById('id').value,
+			password: document.getElementById('password').value
+		}
+	}).then(response =>{
+		alert(response.data);
+		location.reload();
+	}).catch(err => {
+		alert(err.response.data + " ["+err.response.status+"]");		
+	});
+	
+	
+	
+}// login
+
+
+
+// ** loginForm
+function loginForm(){
+	let resultHTML=
+	`
+		<table>
+			<caption style="font-weight:bold">Login</caption>
+			<tr height="40">
+				<td bgcolor="indogo"><label for="id">I D</label></td>
+				<td bgcolor="indogo"><input type="text" id="id" name="id" size="20">
+				<br><span id="iMessage" class="eMessage"></span>
+				</td>
+			</tr>
+			<tr height="40">
+				<td bgcolor="indogo"><label for="password">Password&nbsp;</label></td>
+				<td bgcolor="indogo"><input type="password" id="password" name="password" size="20">
+					<br><span id="pMessage" class="eMessage"></span>
+				</td>
+			</tr>		
+			<tr><td></td>
+				<td><input type="submit" id="submitTag" value="로그인" onclick="login()">&nbsp;&nbsp;
+				<input type="reset" value="취소"></td>
+			</tr>
+		</table>
+	`;
+	
+	if(document.getElementById('textArea01').innerHTML==''){
+		document.getElementById('textArea01').innerHTML=resultHTML;
+	}else{
+		document.getElementById('textArea01').innerHTML='';
+	}
+	
+	
+}// loginForm
+
+
+// ** userDetail
 function userDetail(id){
 	let url = "/rest/userDetail/"+id;		// PathVariable 형태로 요청
 	let resultHTML = "";
@@ -68,19 +146,24 @@ function userDetail(id){
 		
 	});
 	
-}
+} // userDetail
 
 // ** userList
 function userList(){
-	let url = "/user/userList";
+	if(document.getElementById('textArea01').innerHTML==''){
+		let url = "/user/userList";
+
+		axios.get(url).then(response => {
+			console.log("List 생성 성공!");
+			document.getElementById('textArea01').innerHTML = response.data;
+		}).catch(err => {
+			console.log("List 생성 실패! => " + err.message);
+		});
+	}else{
+		document.getElementById('textArea01').innerHTML='';
+	}
 	
-	axios.get(url).then(response => {
-		console.log("List 생성 성공!");
-		document.getElementById('textArea01').innerHTML=response.data;
-	}).catch(err =>{
-		console.log("List 생성 실패! => "+err.message);
-	});
-	document.getElementById('textArea01').innerHTML='';
+
 }//userList
 
 

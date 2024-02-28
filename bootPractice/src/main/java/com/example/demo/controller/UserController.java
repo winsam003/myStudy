@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +24,20 @@ public class UserController {
 	
 	UserService service;
 	
-	@GetMapping("/userManagement")
-	public void userManagement() {
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "user/userManagement";
 	}
 	
+	
+	// ** userManagement
+	@GetMapping("/userManagement")
+	public void userManagement() {
+	} // userManagement
+	
+	// ** userList
 	@GetMapping("/userList")
 	public String userList(Model model) {
 		
@@ -35,6 +47,6 @@ public class UserController {
 		model.addAttribute("userList", list);
 		
 		return "user/userList";
-	}
+	} // userList
 	
 }

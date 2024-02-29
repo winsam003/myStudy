@@ -2,41 +2,25 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import com.example.demo.domain.MemberDTO;
-
-import pageTest.SearchCriteria;
+import com.example.demo.entity.Member;
 
 public interface MemberService {
 
-//	// ** selectList
-//	List<MemberDTO> selectList(); // selectList
-//
-//	// ** selectOne
-//	MemberDTO selectOne(String id); // selectOne
-//
-//	// ** insert
-//	int insert(MemberDTO dto); // insert
-//
-//	// ** update	
-//	int update(MemberDTO dto); // update
-//
-//	// ** pwUpdate
-//	int pwUpdate(MemberDTO dto);
-//	
-//	// ** delete
-//	int delete(String id); // delete
-//	
-//	List<MemberDTO> selectJoList(int jno);
-//	
-//	public List<MemberDTO> mPageList(SearchCriteria cri);
-//	
-//	public int totalRowsCount(SearchCriteria cri);
-//	
-//	// ** mCheckList
-//	public List<MemberDTO> mCheckList(SearchCriteria cri);
-//	
-//	// ** mCheckRowsCount
-//	public int mCheckRowsCount(SearchCriteria cri);
-	
+	// ** selectList
+	List<Member> selectList(); // selectList
 
+	// ** selectOne
+	Member selectOne(String id); // selectOne
+
+	// ** insert, update
+	Member save(Member entity); // insert
+
+	// ** pwUpdate
+	// => @Query 적용
+	void updatePassword(String id, String password);
+	
+	// ** delete
+	void deleteById(String id); // delete
+	
+	List<Member> findByJno(int jno);
 }

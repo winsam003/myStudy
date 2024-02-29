@@ -78,7 +78,7 @@ public class Member {
 	@Id
 	private String id; // primary_key
 	
-	@Column	// 패스워드는 따로 수정함 update시 같이 수정하지 않음 그래서 알려줘야 함
+	@Column(updatable = false)	// 패스워드는 따로 수정함 update시 같이 수정하지 않음 그래서 알려줘야 함
 	private String password; // not null	
 	
 	private String name;

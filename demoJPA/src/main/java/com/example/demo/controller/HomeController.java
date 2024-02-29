@@ -53,9 +53,9 @@ public class HomeController {
 	public String ginsert() {
 		
 		GuestbookDTO dto = GuestbookDTO.builder()
-				.title("JPA Insert Test")
-				.content("입력이 잘되나요?")
-				.writer("근정아 집중하자")
+				.title("JPA는 굉장히")
+				.content("어려운듯 아닌듯")
+				.writer("쉽습니다.")
 				.build();
 		
 		
@@ -83,10 +83,10 @@ public class HomeController {
 	public String gupdate() {
 		
 		GuestbookDTO dto = GuestbookDTO.builder()
-				.gno(1L)
-				.title("근정아!!!!!")
-				.content("근정아 졸지말자")
-				.writer("winsam")
+				.gno(82L)
+				.title("JPA는 굉장히")
+				.content("어려운듯 아닌듯")
+				.writer("MyBatis 보다 쉬워요~!.")
 				.build();
 		
 		
@@ -109,7 +109,7 @@ public class HomeController {
 	}
 	
 	@GetMapping("/gdelete")
-	// => 쿼리스트링으로 Test : /gdelete?gno=6
+	// => 쿼리스트링으로 Test : /gdelete?gno=82
 	public String gdelete(Long gno) {
 		try {
 			service.delete(gno);

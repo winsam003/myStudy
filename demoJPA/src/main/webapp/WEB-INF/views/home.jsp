@@ -51,6 +51,13 @@
 
 &nbsp;<a href="/gpage">GPage</a>&nbsp;
 
+<br>
+&nbsp;<a href="/tinsert">TSave</a>&nbsp; 
+&nbsp;<a href="/tupdate">TUpdate</a>&nbsp; 
+&nbsp;<a href="/tdupupdate">TDupUpdate</a>&nbsp; 
+&nbsp;<a href="/tcalcCount">TCalc</a>&nbsp; 
+&nbsp;<a href="/testlist">TList</a>&nbsp; 
+
 <br><hr>
 
 <img alt="mainImage" src="/resources/images/www.gif" width="300"height="200">

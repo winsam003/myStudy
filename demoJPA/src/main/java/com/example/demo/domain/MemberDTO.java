@@ -70,7 +70,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class MemberDTO {
+public class MemberDTO extends JoDTO{
 	// 1) private 멤버변수
 	private String id; // primary_key
 	private String password; // not null
